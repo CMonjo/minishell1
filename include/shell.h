@@ -13,6 +13,10 @@
 		int my_fork;
 		char *buffer;
 		char **path;
+		char **home;
+		char **pwd;
+		char **oldpwd;
 		char **env;
+		char **command;
 	} shell_t;
 #endif

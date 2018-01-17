@@ -1,30 +1,27 @@
 /*
-** EPITECH PROJECT, =pdate=
-** Project =pname=
+** EPITECH PROJECT, 2017
+** Project minishell1
 ** File description:
 ** Main file
 */
 
 #include "main.h"
-#include "gnl.h"
 
 void init_env(shell_t *shell, char **nenv)
 {
-	int i = 0;
-	int j = 0;
 	int len = 0;
 
 	for (int k = 0; nenv[k]; len++, k++);
 	shell->env = malloc(sizeof(char *) * (len + 1));
-	while (nenv[i] != NULL) {
+	if (shell->env == NULL)
+		printf("funct pour sortir de la loop\n");
+	for (int i = 0, j = 0; nenv[i]; i++, j = 0) {
 		shell->env[i] = malloc(sizeof(char) * (my_strlen(nenv[i]) + 1));
-		while (nenv[i][j] != '\0') {
+		if (shell->env[i] == NULL)
+			printf("funct pour sortir de la loop\n");
+		for (; nenv[i][j] != '\0'; j++)
 			shell->env[i][j] = nenv[i][j];
-			j++;
-		}
 		shell->env[i][j] = '\0';
-		j = 0;
-		i++;
 	}
 }
 
@@ -34,36 +31,86 @@ void disp_prompt(void)
 		my_putstr("$> ");
 }
 
+char *get_str_env(shell_t *shell, char *my_env)
+{
+	int i = 0;
+	int j = 0;
+	int k = 0;
+	char *newstr;
+
+	//A METTRE A LA NORME
+	//CAS : si j'ai pas trouvé l'env que je voulais je vais return quelque chose de mauvais (segfault)
+	//SI WHILE AVEC != NULL -> segfault à voir demain
+	printf("%s\n", my_env);
+	while (shell->env[i][j] != '=' || shell->env[i] != NULL) {
+		if (shell->env[i][j] == my_env[k]) {
+			j++;
+			k++;
+		} else {
+			i++;
+			j = 0;
+			k = 0;
+		}
+	}
+	newstr = malloc(sizeof(char) * (my_strlen(shell->env[i]) + 1));
+	k = 0;
+	j++;
+	while (shell->env[i][j] != '\0') {
+		newstr[k] = shell->env[i][j];
+		k++;
+		j++;
+	}
+	printf("ok\n");
+	return (newstr);
+}
+
+void get_env(shell_t *shell)
+{
+	char *new_env = get_str_env(shell, "PATH=");
+	shell->path = my_str_to_word_array(new_env, ':');
+	// char *new_env = get_str_env(shell, "HOME=");
+	// shell->home = my_str_to_word_array(new_env, '/');
+	// char *new_env = get_str_env(shell, "PWD=");
+	// shell->pwd = my_str_to_word_array(new_env, '/');
+	// char *new_env = get_str_env(shell, "OLDPWD=");
+	// shell->oldpwd = my_str_to_word_array(new_env, '/');
+	//CONCAT CHAQUE ENV AVEC UN '/' A LA FIN
+	for (int i = 0; shell->path[i] != NULL; i++) {
+		write(1, shell->path[i], my_strlen(shell->path[i]));
+		printf("\n");
+	}
+}
+
 void my_exec(shell_t *shell)
 {
-	shell->path = my_str_to_word_array(shell->buffer, ' ');
-	//printf("path = %s\n", shell->path[0]);
+	shell->command = my_str_to_word_array(shell->buffer, ' ');
 	shell->my_fork = fork();
 	if (shell->my_fork != 0) {
 		wait(&(shell->my_fork));
 		shell->my_fork = WTERMSIG(shell->my_fork);
-	} else
-		execve(shell->path[0], shell->path, shell->env);
-	free(shell->path);
+	} else {
+		execve(shell->command[0], shell->command, shell->env);
+	}
+	free(shell->command);
 }
 
 void read_input(shell_t *shell)
 {
 	size_t read = 0;
 	int fd = 0;
-	int i = 0;
 
+	// FAIRE ATTENTION AUX TESTS MOULI QUI SE FONT EN TTY ET QUI N'A PAS DE \0 && \n
+	shell->buffer = NULL;
 	fd = getline(&shell->buffer, &read, stdin);
-	for (; shell->buffer[i] != '\n' && shell->buffer[i] != '\0'; i++);
-	shell->buffer[i] = '\0';
+	shell->buffer[fd - 1] = '\0';
 }
 
 void shell_loop(shell_t *shell)
 {
-	disp_prompt();
 	while (shell->status == -1) {
-		read_input(shell);
 		disp_prompt();
+		read_input(shell);
+		get_env(shell);
 		my_exec(shell);
 	}
 }
@@ -76,7 +123,6 @@ int main(int ac, char **av, char **nenv)
 	(void)av;
 	shell->my_fork = 0;
 	shell->status = -1;
-	shell->buffer = malloc(sizeof(char) * 200);
 	init_env(shell, nenv);
 	shell_loop(shell);
 	return (0);

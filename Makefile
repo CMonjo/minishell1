@@ -9,7 +9,7 @@ CC	=	gcc
 
 CFLAGS	=	-Wextra -W -Wall -I ./include/
 
-LIB	=	-L lib/tools/ -ltools -L lib/ -lgnl
+LIB	=	-L lib/tools/ -ltools
 
 SRC	=	src/main.c
 

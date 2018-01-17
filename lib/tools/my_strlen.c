@@ -5,6 +5,8 @@
 ** Count and return the number of character found in the string
 */
 
+#include "tools.h"
+
 int my_strlen(char const *str)
 {
 	int var = 0;

@@ -28,5 +28,6 @@
 	#include <stdarg.h>
 	#include <string.h>
 	#include <fcntl.h>
-	#include "my.h"
+	#include "tools.h"
+	#include "shell.h"
 #endif

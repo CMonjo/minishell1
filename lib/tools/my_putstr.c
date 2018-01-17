@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "my.h"
+#include "tools.h"
 
 int my_putstr(char const *str)
 {

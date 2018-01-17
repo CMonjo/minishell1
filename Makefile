@@ -7,9 +7,9 @@
 
 CC	=	gcc
 
-CFLAGS	=	-Werror -Wextra -W -Wall -I ./include/
+CFLAGS	=	-Wextra -W -Wall -I ./include/
 
-LIB	=	-L lib/my/ -lmy
+LIB	=	-L lib/tools/ -ltools
 
 SRC	=	src/main.c
 
@@ -20,17 +20,17 @@ NAME	=	mysh
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	make -C ./lib/my/
+	make -C ./lib/tools/
 	$(CC) $(OBJ) $(CFLAGS) $(LIB) -o $(NAME)
 	rm -f $(OBJ)
-	make clean -C ./lib/my/
+	make clean -C ./lib/tools/
 
 clean:
 	rm -f $(OBJ)
-	make clean -C ./lib/my/
+	make clean -C ./lib/tools/
 
 fclean: clean
 	rm -f $(NAME)
-	make fclean -C ./lib/my/
+	make fclean -C ./lib/tools/
 
 re: fclean all

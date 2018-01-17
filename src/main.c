@@ -7,73 +7,64 @@
 
 #include "main.h"
 
-// int calc_args(char **path)
-// {
-// 	int i = 0;
-//
-// 	while (path[i] != NULL)
-// 		i++;
-// 	i -= 1;
-// 	return (i);
-// }
-//
-// void execute_prog(int my_fork)
-// {
-// 	printf("Program terminated.\n");
-// 	printf("Status:");
-// 	if (my_fork == 11)
-// 		printf(" Segmentation Fault\n");
-// 	else
-// 		printf(" OK\n");
-// }
-//
-// void display_shell(int nb_arg, char **path)
+// void display_shell(char **path)
 // {
 // 	int my_fork = 0;
-// 	printf("program name: %s\n", path[0]);
-// 	printf("Nb args: %d\n", nb_arg);
-// 	printf("PID: %d\n", getpid());
+//
 // 	my_fork = fork();
 // 	if (my_fork != 0) {
 // 		wait(&my_fork);
 // 		my_fork = WTERMSIG(my_fork);
-// 		execute_prog(my_fork);
-// 	} else {
-// 		printf("Child PID: %d\n", getpid());
+// 	} else
 // 		execve(path[0], path, NULL);
-// 	}
 // }
 //
 // int main(int ac, char **av)
 // {
-// 	int nb_arg = 0;
 // 	char **path = malloc(sizeof(char *) * 1000);
 //
 // 	if (ac < 2)
 // 		return 84;
 // 	path = my_str_to_word_array(av[1]);
-// 	nb_arg = calc_args(path);
-// 	display_shell(nb_arg, path);
+// 	display_shell(path);
 // 	return (0);
 // }
-
-
-int main()
+void prompt(shell_t *shell)
 {
-	int rd = 0;
-	int my_fork = 0;
-	char *buffer = malloc(sizeof(char) * 200);
-
 	while (1) {
-		my_putstr(">");
-		if (rd == read(1, buffer, 200))
-			printf("buffer\n");
-			my_fork = fork();
-			if (my_fork != 0) {
-				wait(&my_fork);
-				my_fork = WTERMSIG(my_fork);
+		my_putstr("$> ");
+		if (read(1, shell->buffer, 200))
+			printf("Buff = %s\n", shell->buffer);
+			shell->path = my_str_to_word_array(shell->buffer, '/');
+			//free(buffer);
+			shell->my_fork = fork();
+			if (shell->my_fork != 0) {
+				wait(&shell->my_fork);
+				shell->my_fork = WTERMSIG(shell->my_fork);
 			} else
-				execve(buffer, &buffer, NULL);
+				execve(shell->path[0], shell->path, NULL);
+
 	}
+}
+
+void init_env(shell, char **nenv)
+{
+
+}
+
+int main(int ac, char **av, char **nenv)
+{
+	shell_t *shell = malloc(sizeof(shell_t));
+
+	(void)ac;
+	(void)av;
+	shell->my_fork = 0;
+	shell->buffer = malloc(sizeof(char) * 200);
+	init_env(shell, nenv);
+	prompt(shell);
+
+	// for (int i = 0; str[i] != NULL; i++) {
+	// 	write(1, str[i], my_strlen(str[i]));
+	// 	printf("\n");
 	return (0);
 }

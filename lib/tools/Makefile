@@ -2,21 +2,23 @@
 ## EPITECH PROJECT, 2017
 ## Makefile
 ## File description:
-## libmy
+## Library my
 ##
 
 CC	=	gcc
 
-CFLAGS	=	-Wall -Wextra -W -Werror -I ../../include/
+CFLAGS	=	-Wall -Wextra -W -I ../../include/
 
-SRC	=	my_putchar.c	\
-		my_putstr.c	\
-		my_putstr.c	\
-		my_strlen.c
+SRC	=	my_getnbr.c		\
+		my_strlen.c		\
+		my_putchar.c		\
+		my_putstr.c		\
+		my_str_to_word_array.c	\
+		my_put_nbr.c
 
 OBJ	=	$(SRC:.c=.o)
 
-NAME	=	libmy.a
+NAME	=	libtools.a
 
 all:	$(NAME)
 

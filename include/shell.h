@@ -9,6 +9,7 @@
 	#define _SHELL_H_
 	#include "main.h"
 	typedef struct shell_s {
+		int status;
 		int my_fork;
 		char *buffer;
 		char **path;

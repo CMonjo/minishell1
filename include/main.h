@@ -7,11 +7,6 @@
 
 #ifndef MAIN_H_
 	#define MAIN_H_
-	#include <SFML/Graphics.h>
-	#include <SFML/Window.h>
-	#include <SFML/System/Vector2.h>
-	#include <SFML/Audio.h>
-	#include <ncurses.h>
 	#include <stdlib.h>
 	#include <stdio.h>
 	#include <unistd.h>

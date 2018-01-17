@@ -29,27 +29,46 @@
 // 	display_shell(path);
 // 	return (0);
 // }
+
+void disp_prompt(void)
+{
+	if (isatty(0))
+		my_putstr("$> ");
+}
+
+
 void prompt(shell_t *shell)
 {
-	while (1) {
-		my_putstr("$> ");
-		if (read(1, shell->buffer, 200))
-			printf("Buff = %s\n", shell->buffer);
-			shell->path = my_str_to_word_array(shell->buffer, '/');
-			//free(buffer);
+	disp_prompt();
+	while (shell->status == -1 && read(0, shell->buffer, 200)) {
+		disp_prompt();
+		if (read(0, shell->buffer, 200)) {
+			shell->path = my_str_to_word_array(shell->buffer, ' ');
 			shell->my_fork = fork();
 			if (shell->my_fork != 0) {
 				wait(&shell->my_fork);
 				shell->my_fork = WTERMSIG(shell->my_fork);
 			} else
 				execve(shell->path[0], shell->path, NULL);
-
+		}
 	}
 }
 
-void init_env(shell, char **nenv)
+void init_env(shell_t *shell, char **nenv)
 {
+	int i = 0;
+	int j = 0;
 
+	while (nenv[i][j] != '\0') {
+		while (nenv[i][j] != '\0') {
+			printf("ok\n");
+			shell->env[i][j] = nenv[i][j];
+			j++;
+		}
+		shell->env[i][j] = '\0';
+		j = 0;
+		i++;
+	}
 }
 
 int main(int ac, char **av, char **nenv)
@@ -59,12 +78,15 @@ int main(int ac, char **av, char **nenv)
 	(void)ac;
 	(void)av;
 	shell->my_fork = 0;
+	shell->status = -1;
 	shell->buffer = malloc(sizeof(char) * 200);
+	shell->env = malloc(sizeof(char *) * (strlen(nenv)));
 	init_env(shell, nenv);
-	prompt(shell);
+	//prompt(shell);
 
-	// for (int i = 0; str[i] != NULL; i++) {
-	// 	write(1, str[i], my_strlen(str[i]));
-	// 	printf("\n");
+	for (int i = 0; shell->env[i] != NULL; i++) {
+		write(1, shell->env[i], my_strlen(shell->env[i]));
+		printf("\n");
+	}
 	return (0);
 }

@@ -25,4 +25,5 @@
 	#include <fcntl.h>
 	#include "tools.h"
 	#include "shell.h"
+	char *my_strcat(char *dest, char const *src);
 #endif

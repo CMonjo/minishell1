@@ -24,24 +24,24 @@ int how_many_words(char *str, char separator)
 	return (word);
 }
 
-int count_word(char *str, char separator)
+int count_word(char *str, char separator, int *total)
 {
-	static int i = 0;
 	int k = 0;
 
-	for (; str[i] == separator; i++);
-	for (; str[i] && str[i] != separator; i++, k++);
-	if (str[i])
-		i++;
+	for (; str[*total] == separator; (*total)++);
+	for (; str[*total] && str[*total] != separator; (*total)++, k++);
+	if (str[*total])
+		(*total)++;
 	return (k);
 }
 
 char **fill_str(char **new_str, char *str, char separator)
 {
 	int y = 0;
+	int total = 0;
 
 	for (int x = 0, i = 0, word = 0; str[i] != '\0'; y++, x = 0) {
-		word = count_word(str, separator);
+		word = count_word(str, separator, &total);
 		new_str[y] = malloc(sizeof(char) * (word + 1));
 		word = 0;
 		for (; str[i] == separator; i++);
@@ -64,4 +64,4 @@ char **my_str_to_word_array(char *str, char separator)
 	new_str = malloc(sizeof(char *) * (nb_word + 1));
 	new_str = fill_str(new_str, str, separator);
 	return (new_str);
-} 
+}

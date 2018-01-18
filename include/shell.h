@@ -12,11 +12,21 @@
 		int status;
 		int my_fork;
 		char *buffer;
+		char **env;
+		char **command;
+	} shell_t;
+
+	typedef struct nenv_s {
+		int i;
+		int j;
+		int k;
 		char **path;
 		char **home;
 		char **pwd;
 		char **oldpwd;
-		char **env;
-		char **command;
-	} shell_t;
+		char *get_path;
+		char *get_home;
+		char *get_pwd;
+		char *get_oldpwd;
+	} nenv_t;
 #endif

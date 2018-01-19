@@ -12,6 +12,8 @@ CFLAGS	=	-Wall -Wextra -W -g -I ../../include/
 SRC	=	my_getnbr.c		\
 		my_strlen.c		\
 		my_putchar.c		\
+		my_strcpy.c		\
+		my_strcmp.c		\
 		my_putstr.c		\
 		my_str_to_word_array.c	\
 		my_strcat.c		\

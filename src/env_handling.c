@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2017
 ** Project minishell1
 ** File description:
-** Main file
+** env handling file
 */
 
 #include "main.h"
@@ -14,23 +14,23 @@ void init_struct_env(nenv_t *nenv)
 	nenv->k = 0;
 }
 
-void init_env(shell_t *shell, char **new_env)
+int init_env(shell_t *shell, char **new_env)
 {
 	int len = 0;
 
 	for (int k = 0; new_env[k]; len++, k++);
-	shell->env = malloc(sizeof(char *) * (len + 1));
-	if (shell->env == NULL)
-		printf("funct pour sortir de la loop\n");
+	if (!(shell->env = malloc(sizeof(char *) * (len + 1))))
+		return (shell->status = 0);
 	for (int i = 0, j = 0; new_env[i]; i++, j = 0) {
-		shell->env[i] = malloc(sizeof(char) * (my_strlen(new_env[i]) + 1));
-		if (shell->env[i] == NULL)
-			printf("funct pour sortir de la loop\n");
+		if (!(shell->env[i] = malloc(sizeof(char)
+		* (my_strlen(new_env[i]) + 1))))
+			return (shell->status = 0);
 		for (; new_env[i][j] != '\0'; j++)
 			shell->env[i][j] = new_env[i][j];
 		shell->env[i][j] = '\0';
 	}
 	shell->env[len] = NULL;
+	return (0);
 }
 
 void check_env(shell_t *shell, nenv_t *nenv, char *my_env)

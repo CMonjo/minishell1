@@ -5,16 +5,16 @@
 ** Copies a string into another
 */
 
-#include "my.h"
+#include "main.h"
 
 char *my_strcpy(char *dest, char const *src)
 {
-	int cpt = 0;
+	int i = 0;
 
-	while (cpt <= my_strlen(src)) {
-		dest[cpt] = src[cpt];
-		cpt += 1;
+	while (i <= my_strlen(src)) {
+		dest[i] = src[i];
+		i += 1;
 	}
-	dest[cpt] = '\0';
+	dest[i] = '\0';
 	return (dest);
 }

@@ -1,9 +1,12 @@
 /*
 ** EPITECH PROJECT, 2017
-** c
+** my_strcmp
 ** File description:
-** c
+** Compare two string
 */
+
+#include "main.h"
+
 int my_strcmp(char const *s1, char const *s2)
 {
 	int i = 0;

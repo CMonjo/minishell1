@@ -7,7 +7,7 @@
 
 CC	=	gcc
 
-CFLAGS	=	-Wall -Wextra -W -I ../../include/
+CFLAGS	=	-Wall -Wextra -W -g -I ../../include/
 
 SRC	=	my_getnbr.c		\
 		my_strlen.c		\

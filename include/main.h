@@ -26,4 +26,9 @@
 	#include "tools.h"
 	#include "shell.h"
 	char *my_strcat(char *dest, char const *src);
+	void init_env(shell_t *shell, char **new_env);
+	void check_env(shell_t *shell, nenv_t *nenv, char *my_env);
+	char *get_str_env(shell_t *shell, nenv_t *nenv, char *my_env);
+	void free_get_env(nenv_t *nenv);
+	void init_struct_env(nenv_t *nenv);
 #endif

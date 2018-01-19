@@ -7,11 +7,12 @@
 
 CC	=	gcc
 
-CFLAGS	=	-Wextra -W -Wall -I ./include/
+CFLAGS	=	-Wextra -W -Wall -g3 -I ./include/
 
 LIB	=	-L lib/tools/ -ltools
 
-SRC	=	src/main.c
+SRC	=	src/env_handling.c		\
+		src/main.c
 
 OBJ	=	$(SRC:.c=.o)
 

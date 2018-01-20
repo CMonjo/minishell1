@@ -59,7 +59,7 @@ int parse_command(shell_t *shell, nenv_t *nenv)
 {
 	int tmp = 0;
 
-	tmp = read_command(shell);
+	tmp = read_command(shell, nenv);
 	if (check_path_command(shell) == 1)
 		return (0);
 	if (tmp == 1)

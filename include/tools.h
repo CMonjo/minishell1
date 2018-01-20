@@ -15,4 +15,5 @@
 	char *my_strcat(char *dest, char const *src);
 	int my_strcmp(char const *s1, char const *s2);
 	int my_getnbr(char const *str);
+	int my_str_isnum(char const *str);
 #endif

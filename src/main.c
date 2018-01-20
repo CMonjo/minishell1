@@ -7,6 +7,18 @@
 
 #include "main.h"
 
+void my_exec(shell_t *shell)
+{
+	shell->my_fork = fork();
+	if (shell->my_fork != 0) {
+		wait(&(shell->my_fork));
+		shell->my_fork = WTERMSIG(shell->my_fork);
+	} else
+		execve(shell->path_bin, shell->command, shell->env);
+	for (int k = 0; shell->command &&
+		shell->command[k]; free(shell->command[k]), k++);
+}
+
 void free_shell(shell_t *shell, nenv_t *nenv)
 {
 	int j = 0;
@@ -48,7 +60,5 @@ int main(int ac, char **av, char **new_env)
 			break;
 	}
 	free_shell(shell, nenv);
-	if (shell->status == 260)
-		shell->status = 0;
 	return (shell->status);
 }

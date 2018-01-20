@@ -12,8 +12,9 @@ CFLAGS	=	-Wextra -W -Wall -I ./include/
 LIB	=	-L lib/tools/ -ltools
 
 SRC	=	src/env_handling.c	\
-		src/check_imput.c	\
+		src/check_input.c	\
 		src/get_env.c		\
+		src/builtin.c		\
 		src/main.c
 
 OBJ	=	$(SRC:.c=.o)

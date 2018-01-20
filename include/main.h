@@ -32,4 +32,7 @@
 	void free_get_env(nenv_t *nenv);
 	void get_env_both_pwd(shell_t *shell, nenv_t *nenv);
 	void get_env_path_home(shell_t *shell, nenv_t *nenv);
+	void check_exit_status(shell_t *shell);
+	int read_command(shell_t *shell);
+	void display_env(shell_t *shell);
 #endif

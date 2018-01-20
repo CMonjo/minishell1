@@ -55,7 +55,8 @@ void check_command(shell_t *shell, nenv_t *nenv)
 int read_command(shell_t *shell)
 {
 	if (my_strcmp(shell->command[0], "exit") == 0) {
-		shell->status = 0;
+		if (shell->command[1] != NULL)
+			shell->status = my_getnbr(shell->command[1]);
 		return (1);
 	}
 	if (my_strcmp(shell->command[0], "env") == 0) {

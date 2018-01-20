@@ -7,7 +7,7 @@
 
 CC	=	gcc
 
-CFLAGS	=	-Wextra -W -Wall -g3 -I ./include/
+CFLAGS	=	-Wextra -W -Wall -I ./include/
 
 LIB	=	-L lib/tools/ -ltools
 

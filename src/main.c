@@ -38,8 +38,8 @@ int main(int ac, char **av, char **new_env)
 	(void)ac;
 	(void)av;
 	shell->my_fork = 0;
-	shell->status = -1;
-	while (shell->status == -1) {
+	shell->status = 260;
+	while (shell->status == 260) {
 		if (init_env(shell, new_env) == 1)
 			break;
 		disp_prompt();
@@ -48,5 +48,7 @@ int main(int ac, char **av, char **new_env)
 			break;
 	}
 	free_shell(shell, nenv);
-	return (0);
+	if (shell->status == 260)
+		shell->status = 0;
+	return (shell->status);
 }

@@ -30,19 +30,6 @@ void disp_prompt(void)
 	}
 }
 
-void my_exec(shell_t *shell, nenv_t *nenv, char *path)
-{
-	shell->my_fork = fork();
-	if (shell->my_fork != 0) {
-		wait(&(shell->my_fork));
-		shell->my_fork = WTERMSIG(shell->my_fork);
-	} else {
-		execve(path, shell->command, shell->env);
-	}
-	for (int k = 0; shell->command &&
-		shell->command[k]; free(shell->command[k]), k++);
-}
-
 int main(int ac, char **av, char **new_env)
 {
 	shell_t *shell = malloc(sizeof(shell_t));
@@ -57,8 +44,7 @@ int main(int ac, char **av, char **new_env)
 			break;
 		disp_prompt();
 		get_env_path_home(shell, nenv);
-		read_input(shell, nenv);
-		if (isatty(0) == 0)
+		if (read_input(shell, nenv) == 1)
 			break;
 	}
 	free_shell(shell, nenv);

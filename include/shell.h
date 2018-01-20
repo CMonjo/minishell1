@@ -15,6 +15,7 @@
 		char **env;
 		char **command;
 		char *filepath;
+		char *path_bin;
 	} shell_t;
 
 	typedef struct nenv_s {

@@ -19,17 +19,12 @@
 	#include <fcntl.h>
 	#include "tools.h"
 	#include "shell.h"
-
-
-	char *my_strcat(char *dest, char const *src);
-
-
 	void free_shell(shell_t *shell, nenv_t *nenv);
 	void disp_prompt(void);
-	void my_exec(shell_t *shell, nenv_t *nenv, char *path);
+	void my_exec(shell_t *shell);
 	void check_command(shell_t *shell, nenv_t *nenv);
 	int read_command(shell_t *shell);
-	void read_input(shell_t *shell, nenv_t *nenv);
+	int read_input(shell_t *shell, nenv_t *nenv);
 	void init_struct_env(nenv_t *nenv);
 	int init_env(shell_t *shell, char **new_env);
 	void check_env(shell_t *shell, nenv_t *nenv, char *my_env);

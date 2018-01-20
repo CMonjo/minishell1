@@ -7,53 +7,123 @@
 
 #include "main.h"
 
+void my_exec(shell_t *shell)
+{
+	shell->my_fork = fork();
+	if (shell->my_fork != 0) {
+		wait(&(shell->my_fork));
+		shell->my_fork = WTERMSIG(shell->my_fork);
+	} else
+		execve(shell->path_bin, shell->command, shell->env);
+	for (int k = 0; shell->command &&
+		shell->command[k]; free(shell->command[k]), k++);
+}
+
+void display_env(shell_t *shell)
+{
+	for (int i = 0; shell->env[i] != NULL; i++) {
+			printf("%s\n", shell->env[i]);
+	}
+}
+
 void check_command(shell_t *shell, nenv_t *nenv)
 {
-	char *path = NULL;
-
+	shell->path_bin = NULL;
 	shell->filepath = malloc(sizeof(char) * (my_strlen(shell->command[0]) + 2));
 	shell->filepath = shell->command[0];
 	if (shell->filepath[0] != '/')
 		shell->filepath = my_strcat("/", shell->filepath);
-	//REGARDER SI JE TAPE LA COMMANDE /BIN/LS DIRECTEMENT POUR TESTER AVEC ACCESS DANS CONCAT
-	for (int i = 0; nenv->path[i]; i++) {
-		path = malloc(sizeof(char) * (my_strlen(nenv->path[i]) + my_strlen(shell->filepath) + 1));
-		path = my_strcpy(path, nenv->path[i]);
-		path = my_strcat(path, shell->filepath);
-		if (access(path, X_OK) == 0)
-			break;
-		free(path);
-		path = NULL;
+	else {
+		printf("hello\n");
 	}
-	if (path == NULL) {
+	for (int i = 0; nenv->path[i]; i++) {
+		shell->path_bin = malloc(sizeof(char) * (my_strlen(nenv->path[i]) + my_strlen(shell->filepath) + 1));
+		shell->path_bin = my_strcpy(shell->path_bin, nenv->path[i]);
+		shell->path_bin = my_strcat(shell->path_bin, shell->filepath);
+		if (access(shell->path_bin, X_OK) == 0)
+			break;
+		free(shell->path_bin);
+		shell->path_bin = NULL;
+	}
+	if (shell->path_bin == NULL) {
 		my_putstr(shell->command[0]);
 		my_putstr(": Command not found.\n");
 	} else
-		my_exec(shell, nenv, path);
+		my_exec(shell);
 }
 
 int read_command(shell_t *shell)
 {
-	if (my_strcmp(shell->buffer, "exit") == 0) {
+	if (my_strcmp(shell->command[0], "exit") == 0) {
 		shell->status = 0;
 		return (1);
+	}
+	if (my_strcmp(shell->command[0], "env") == 0) {
+		display_env(shell);
+		return (2);
 	}
 	return (0);
 }
 
-void read_input(shell_t *shell, nenv_t *nenv)
+int parse_command(shell_t *shell, nenv_t *nenv)
+{
+	int tmp = 0;
+
+	tmp = read_command(shell);
+	if (tmp == 1)
+		return (1);
+	else if (tmp == 0)
+		check_command(shell, nenv);
+	return (0);
+}
+
+int read_input(shell_t *shell, nenv_t *nenv)
 {
 	size_t read = 0;
 	int fd = 0;
 
+	shell->filepath = NULL;
 	shell->buffer = NULL;
 	fd = getline(&shell->buffer, &read, stdin);
+	if (fd == -1)
+		return (1);
 	if (shell->buffer[fd - 1] == '\n')
 		shell->buffer[fd - 1] = '\0';
-	if (read_command(shell) == 1)
-		return;
 	if (shell->buffer[0] != '\0') {
 		shell->command = my_str_to_word_array(shell->buffer, ' ');
-		check_command(shell, nenv);
+		parse_command(shell, nenv);
 	}
+	return (0);
 }
+
+
+//
+// int parse_command(shell_t *shell, nenv_t *nenv)
+// {
+// 	int tmp = 0;
+//
+// 	tmp = read_command(shell);
+// 	if (tmp == 1)
+// 		return (1);
+// 	else if (tmp == 0 && shell->buffer[0] != '\0') {
+// 		shell->command = my_str_to_word_array(shell->buffer, ' ');
+// 		check_command(shell, nenv);
+// 	}
+// 	return (0);
+// }
+//
+// int read_input(shell_t *shell, nenv_t *nenv)
+// {
+// 	size_t read = 0;
+// 	int fd = 0;
+//
+// 	shell->filepath = NULL;
+// 	shell->buffer = NULL;
+// 	fd = getline(&shell->buffer, &read, stdin);
+// 	if (fd == -1)
+// 		return (1);
+// 	if (shell->buffer[fd - 1] == '\n')
+// 		shell->buffer[fd - 1] = '\0';
+// 	parse_command(shell, nenv);
+// 	return (0);
+// }

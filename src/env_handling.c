@@ -7,6 +7,25 @@
 
 #include "main.h"
 
+void free_get_env(nenv_t *nenv)
+{
+	static int i = 0;
+	int j = 0;
+
+	if (i == 0)
+		i = 1;
+	else {
+		for (j = 0; nenv->path &&
+			nenv->path[j]; free(nenv->path[j]), j++);
+		for (j = 0; nenv->home &&
+			nenv->home[j]; free(nenv->home[j]), j++);
+		for (j = 0; nenv->pwd &&
+			nenv->pwd[j]; free(nenv->pwd[j]), j++);
+		for (j = 0; nenv->oldpwd &&
+			nenv->oldpwd[j]; free(nenv->oldpwd[j]), j++);
+	}
+}
+
 void init_struct_env(nenv_t *nenv)
 {
 	nenv->i = 0;
@@ -67,23 +86,4 @@ char *get_str_env(shell_t *shell, nenv_t *nenv, char *my_env)
 		return (newstr);
 	}
 	return (NULL);
-}
-
-void free_get_env(nenv_t *nenv)
-{
-	static int i = 0;
-	int j = 0;
-
-	if (i == 0)
-		i = 1;
-	else {
-		for (j = 0; nenv->path &&
-			nenv->path[j]; free(nenv->path[j]), j++);
-		for (j = 0; nenv->home &&
-			nenv->home[j]; free(nenv->home[j]), j++);
-		for (j = 0; nenv->pwd &&
-			nenv->pwd[j]; free(nenv->pwd[j]), j++);
-		for (j = 0; nenv->oldpwd &&
-			nenv->oldpwd[j]; free(nenv->oldpwd[j]), j++);
-	}
 }

@@ -29,8 +29,7 @@
 	void check_env(shell_t *shell, nenv_t *nenv, char *my_env);
 	char *get_str_env(shell_t *shell, nenv_t *nenv, char *my_env);
 	void free_get_env(nenv_t *nenv);
-	void get_env_both_pwd(shell_t *shell, nenv_t *nenv);
-	void get_env_path_home(shell_t *shell, nenv_t *nenv);
+	void get_env(shell_t *shell, nenv_t *nenv);
 	void check_exit_status(shell_t *shell);
 	int read_command(shell_t *shell, nenv_t *nenv);
 	void display_env(shell_t *shell);

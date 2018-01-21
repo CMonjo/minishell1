@@ -23,9 +23,6 @@
 		int j;
 		int k;
 		char **path;
-		char **home;
-		char **pwd;
-		char **oldpwd;
 		char *get_path;
 		char *get_home;
 		char *get_pwd;

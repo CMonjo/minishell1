@@ -13,7 +13,6 @@ LIB	=	-L lib/tools/ -ltools
 
 SRC	=	src/env_handling.c	\
 		src/check_input.c	\
-		src/get_env.c		\
 		src/builtin.c		\
 		src/main.c
 

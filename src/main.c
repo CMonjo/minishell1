@@ -24,10 +24,10 @@ void free_shell(shell_t *shell, nenv_t *nenv)
 	int j = 0;
 
 	for (j = 0; nenv->path && nenv->path[j]; free(nenv->path[j]), j++);
-	for (j = 0; nenv->home && nenv->home[j]; free(nenv->home[j]), j++);
-	for (j = 0; nenv->pwd && nenv->pwd[j]; free(nenv->pwd[j]), j++);
-	for (j = 0; nenv->oldpwd && nenv->oldpwd[j];
-		free(nenv->oldpwd[j]), j++);
+	// for (j = 0; nenv->home && nenv->home[j]; free(nenv->home[j]), j++);
+	// for (j = 0; nenv->pwd && nenv->pwd[j]; free(nenv->pwd[j]), j++);
+	// for (j = 0; nenv->oldpwd && nenv->oldpwd[j];
+	// 	free(nenv->oldpwd[j]), j++);
 	for (j = 0; shell->env && shell->env[j]; free(shell->env[j]), j++);
 	if (shell->buffer != NULL)
 		free(shell->buffer);
@@ -56,7 +56,7 @@ int main(int ac, char **av, char **new_env)
 		if (init_env(shell, new_env) == 1)
 			break;
 		disp_prompt();
-		get_env_path_home(shell, nenv);
+		get_env(shell, nenv);
 		if (read_input(shell, nenv) == 1)
 			break;
 	}

@@ -15,22 +15,26 @@ void free_get_env(nenv_t *nenv)
 	if (i == 0)
 		i = 1;
 	else {
+		free(nenv->get_oldpwd);
+		free(nenv->get_pwd);
+		free(nenv->get_home);
+		free(nenv->get_path);
 		for (j = 0; nenv->path &&
 			nenv->path[j]; free(nenv->path[j]), j++);
-		for (j = 0; nenv->home &&
-			nenv->home[j]; free(nenv->home[j]), j++);
-		for (j = 0; nenv->pwd &&
-			nenv->pwd[j]; free(nenv->pwd[j]), j++);
-		for (j = 0; nenv->oldpwd &&
-			nenv->oldpwd[j]; free(nenv->oldpwd[j]), j++);
 	}
 }
 
-void init_struct_env(nenv_t *nenv)
+void get_env(shell_t *shell, nenv_t *nenv)
 {
-	nenv->i = 0;
-	nenv->j = 0;
-	nenv->k = 0;
+	free_get_env(nenv);
+	nenv->get_path = get_str_env(shell, nenv, "PATH=");
+	if (nenv->get_path == NULL) {
+		nenv->path = NULL;
+	} else
+		nenv->path = my_str_to_word_array(nenv->get_path, ':');
+	nenv->get_home = get_str_env(shell, nenv, "HOME=");
+	nenv->get_pwd = get_str_env(shell, nenv, "PWD=");
+	nenv->get_oldpwd = get_str_env(shell, nenv, "OLDPWD=");
 }
 
 int init_env(shell_t *shell, char **new_env)
@@ -70,7 +74,9 @@ char *get_str_env(shell_t *shell, nenv_t *nenv, char *my_env)
 {
 	char *newstr = NULL;
 
-	init_struct_env(nenv);
+	nenv->i = 0;
+	nenv->j = 0;
+	nenv->k = 0;
 	check_env(shell, nenv, my_env);
 	if (shell->env[nenv->i] != NULL) {
 		newstr = malloc(sizeof(char) *

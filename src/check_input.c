@@ -10,7 +10,8 @@
 void display_env(shell_t *shell)
 {
 	for (int i = 0; shell->env[i] != NULL; i++) {
-			printf("%s\n", shell->env[i]);
+			my_putstr(shell->env[i]);
+			my_putstr("\n");
 	}
 }
 

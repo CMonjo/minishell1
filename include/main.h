@@ -33,4 +33,5 @@
 	void check_exit_status(shell_t *shell);
 	int read_command(shell_t *shell, nenv_t *nenv);
 	void display_env(shell_t *shell);
+	void check_cd(shell_t *shell, nenv_t *nenv);
 #endif

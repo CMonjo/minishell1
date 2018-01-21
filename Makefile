@@ -14,6 +14,7 @@ LIB	=	-L lib/tools/ -ltools
 SRC	=	src/env_handling.c	\
 		src/check_input.c	\
 		src/builtin.c		\
+		src/cd_builtin.c	\
 		src/main.c
 
 OBJ	=	$(SRC:.c=.o)

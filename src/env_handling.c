@@ -81,8 +81,8 @@ char *get_str_env(shell_t *shell, nenv_t *nenv, char *my_env)
 	if (shell->env[nenv->i] != NULL) {
 		newstr = malloc(sizeof(char) *
 		(my_strlen(shell->env[nenv->i]) + 1));
-		for (int l = 0; l != my_strlen(shell->env[nenv->i]);
-		newstr[l] = '\0', l++);
+		for (int tmp = 0; tmp != my_strlen(shell->env[nenv->i]);
+		newstr[tmp] = '\0', tmp++);
 		for (nenv->j++, nenv->k = 0; shell->env[nenv->i] &&
 			shell->env[nenv->i][nenv->j]
 			!= '\0'; nenv->k++, nenv->j++)

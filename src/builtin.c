@@ -26,13 +26,10 @@ int read_command_cd_env(shell_t *shell, nenv_t *nenv)
 		return (1);
 	}
 	if (my_strcmp(shell->command[0], "setenv") == 0) {
-		printf("type = setenv\n");
 		return (1);
 	}
-	if (my_strcmp(shell->command[0], "unsetenv") == 0) {
-		printf("type = unsetenv\n");
+	if (my_strcmp(shell->command[0], "unsetenv") == 0)
 		return (1);
-	}
 	return (0);
 }
 

@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "tools.h"
 
 int how_many_words(char *str, char separator)
 {
